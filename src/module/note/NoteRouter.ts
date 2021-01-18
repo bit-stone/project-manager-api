@@ -4,6 +4,7 @@ import NoteModel, { NoteRefType } from "./NoteModel";
 
 const router = new Router({ prefix: "/api/note" });
 
+// Notizen zu einem refType/refId anzeigen
 router.get("/:refType/:refId", async (ctx, next) => {
   try {
     const noteList = await NoteModel.find({
@@ -26,6 +27,7 @@ router.get("/:refType/:refId", async (ctx, next) => {
   }
 });
 
+// Neue Notiz anlegen
 router.post("/add", async (ctx: Context, next) => {
   try {
     const inputData = ctx.request.body;
@@ -58,6 +60,7 @@ router.post("/add", async (ctx: Context, next) => {
   }
 });
 
+// Notiz entfernen
 router.post("/remove", async (ctx: Context, next) => {
   try {
     // check if user is owner of this note
@@ -70,7 +73,7 @@ router.post("/remove", async (ctx: Context, next) => {
       throw Error("Ungültige Notiz-ID");
     }
 
-    if (noteData.createUserId === ctx.auth.userId) {
+    if (noteData.createUserId.toHexString() === ctx.auth.userId) {
       const removedNote = await NoteModel.findByIdAndRemove(noteData._id);
       ctx.body = {
         success: true,

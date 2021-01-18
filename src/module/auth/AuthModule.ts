@@ -41,13 +41,7 @@ class AuthModule {
       ctx.body = {
         success: true,
         message: "",
-        data: {
-          user: {
-            id: user._id,
-            loginName: user.loginName,
-            displayName: user.displayName
-          }
-        }
+        data: await this.getUserData(tokenString)
       };
     } else {
       throw Error("invalid login name or password");

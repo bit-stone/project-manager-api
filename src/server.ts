@@ -14,6 +14,7 @@ import AuthRouter from "./module/auth/AuthRouter";
 
 import ProjectRouter from "./module/project/ProjectRouter";
 import NoteRouter from "./module/note/NoteRouter";
+import TaskRouter from "./module/task/TaskRouter";
 
 import Router from "@koa/router";
 import mongoose from "mongoose";
@@ -62,6 +63,7 @@ async function initServer() {
   app.use(router.routes()).use(router.allowedMethods());
   app.use(ProjectRouter.routes()).use(ProjectRouter.allowedMethods());
   app.use(NoteRouter.routes()).use(NoteRouter.allowedMethods());
+  app.use(TaskRouter.routes()).use(TaskRouter.allowedMethods());
 
   // it nothing matches: serve app :)
   app.use(staticServe({ rootDir: "client" }));

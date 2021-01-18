@@ -8,16 +8,17 @@ export enum NoteRefType {
 export interface NoteInterface extends Document {
   _id: string;
   refType: NoteRefType;
-  refId: string;
-  createUserId: string;
+  refId: mongoose.Types.ObjectId;
+  createUserId: mongoose.Types.ObjectId;
+  createMoment: Date;
   message: string;
 }
 
 const NoteSchema = new mongoose.Schema({
   refType: { type: String, required: true },
-  refId: { type: String, required: true },
-  createUserId: { type: String, required: true },
-  createMoment: { type: Date },
+  refId: { type: mongoose.Types.ObjectId, required: true },
+  createUserId: { type: mongoose.Types.ObjectId, required: true },
+  createMoment: { type: Date, default: () => Date.now() },
   message: { type: String, required: true }
 });
 
