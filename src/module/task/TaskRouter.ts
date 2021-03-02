@@ -32,6 +32,7 @@ router.post("/list", async (ctx, next) => {
     const filterObject: {
       workUserId?: string;
       createUserId?: string;
+      title?: any;
     } = {};
     const filterInput = ctx.request.body.filterData;
 
@@ -43,7 +44,11 @@ router.post("/list", async (ctx, next) => {
       filterObject["createUserId"] = filterInput.createUserId;
     }
 
-    const taskList = await TaskModel.find(filterObject);
+    if (filterInput.titleText && filterInput.titleText.length) {
+      filterObject["title"] = { $regex: filterInput.titleText, $options: "i" };
+    }
+
+    const taskList = await TaskModel.find(filterObject).sort({ refId: "asc" });
 
     ctx.body = {
       success: true,
